@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Movie Information</title>
+    </head>
+    <style>
+        body {
+            background-color: #3c3c3c;
+            margin: 0;
+            padding: 0;
+        }
+        h1 {
+            color: aliceblue;
+            text-align: center;
+            font-size: 40px;
+            font-weight: 900;
+            text-decoration-line: underline;
+            margin-top: 30px;
+
+        }
+        .MainDiv {
+            max-width: 500px;
+            margin: 0 auto;
+            padding: 60px;
+            text-align: center;
+            font-size: 22px;
+            
+            font-weight: 900;
+            background-color: #06091b;
+            box-shadow: 3px 6px 40px #000;
+            color: white;
+            border-radius: 10px;
+        }
+        #Id_input {
+            height: 40px;
+            width: 100%;
+            text-align: center;
+            font-size: 20px;
+            border-radius: 10px;
+            font-weight: 900;
+            box-shadow: 3px 6px 40px #0a0a0a;
+            border: none;
+            margin-bottom: 20px;
+        }
+        #submit {
+            height: 40px;
+            width: 100%;
+            font-size: 20px;
+            border-radius: 10px;
+            font-weight: 400;
+            box-shadow: 3px 6px 40px #0a0a0a;
+            background-color: #2e8b57;
+            border: none;
+            cursor: pointer;
+        }
+        .borderHeading {
+            border: 3px solid wheat;
+            width: 45%;
+            margin: 20px auto;
+        }
+    
+        @media (min-width: 768px) {
+            .MainDiv {
+                max-width: 700px;
+            }
+        }
+    </style>
+    <body>
+        <h1> -: Movie Search :-</h1>
+        <div class="MainDiv">
+            <input type="text" placeholder="Enter movie name" id="Id_input">
+            <input type="submit" value="Search" id="submit" onclick="submit_button()">
+            <h3 id="title"></h3>
+            <h3 id="rate"></h3>
+            <h3 id="releasedDate"></h3>
+            <h3 id="type"></h3>
+            <script>
+                function submit_button() {
+                    const xhr = new XMLHttpRequest();
+                    const ID_input = document.querySelector("#Id_input").value;
+                    const url = "https://www.omdbapi.com/?t=" + ID_input + "&apikey=cb4577ce";
+                    xhr.onreadystatechange = function () {
+                        if (this.readyState == 4 && this.status == 200) {
+                            var data = this.responseText;
+                            var jsonData = JSON.parse(data);
+    
+                            var Title = jsonData.Title;
+                            var ReleasedD = jsonData.Released;
+                            var Type = jsonData.Genre;
+                            var Rate = jsonData.Ratings[0].Value;
+    
+                            document.getElementById("title").innerHTML = "Movie Name: " + Title + " (" + jsonData.Year + ")";
+                            document.getElementById("rate").innerHTML = "Movie Rating: " + Rate;
+                            document.getElementById("releasedDate").innerHTML = "Released Date: " + ReleasedD;
+                            document.getElementById("type").innerHTML = "Movie Type: " + Type;
+                        }
+                    };
+                    xhr.open("GET", url, true);
+                    xhr.send();
+                }
+            </script>
+        </div>
+        <div class="borderHeading"></div>
+    </body>
+ </html>
+ 
